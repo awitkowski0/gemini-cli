@@ -88,51 +88,12 @@ export const Composer = () => {
 
       <QueuedMessageDisplay messageQueue={uiState.messageQueue} />
 
-      <Box
-        marginTop={1}
-        justifyContent={
-          settings.merged.ui?.hideContextSummary
-            ? 'flex-start'
-            : 'space-between'
-        }
-        width="100%"
-        flexDirection={isNarrow ? 'column' : 'row'}
-        alignItems={isNarrow ? 'flex-start' : 'center'}
-      >
-        <Box marginRight={1}>
-          {process.env['GEMINI_SYSTEM_MD'] && (
-            <Text color={theme.status.error}>|⌐■_■| </Text>
+      <Box paddingTop={isNarrow ? 1 : 0}>
+        {showAutoAcceptIndicator !== ApprovalMode.DEFAULT &&
+          !uiState.shellModeActive && (
+            <AutoAcceptIndicator approvalMode={showAutoAcceptIndicator} />
           )}
-          {uiState.ctrlCPressedOnce ? (
-            <Text color={theme.status.warning}>
-              Press Ctrl+C again to exit.
-            </Text>
-          ) : uiState.ctrlDPressedOnce ? (
-            <Text color={theme.status.warning}>
-              Press Ctrl+D again to exit.
-            </Text>
-          ) : uiState.showEscapePrompt ? (
-            <Text color={theme.text.secondary}>Press Esc again to clear.</Text>
-          ) : (
-            !settings.merged.ui?.hideContextSummary && (
-              <ContextSummaryDisplay
-                ideContext={uiState.ideContextState}
-                geminiMdFileCount={uiState.geminiMdFileCount}
-                contextFileNames={contextFileNames}
-                mcpServers={config.getMcpServers()}
-                blockedMcpServers={config.getBlockedMcpServers()}
-                showToolDescriptions={uiState.showToolDescriptions}
-              />
-            )
-          )}
-        </Box>
-        <Box paddingTop={isNarrow ? 1 : 0}>
-          {showAutoAcceptIndicator !== ApprovalMode.DEFAULT &&
-            !uiState.shellModeActive && (
-              <AutoAcceptIndicator approvalMode={showAutoAcceptIndicator} />
-            )}
-          {uiState.shellModeActive && <ShellModeIndicator />}
-        </Box>
+        {uiState.shellModeActive && <ShellModeIndicator />}
       </Box>
 
       {uiState.showErrorDetails && (
@@ -179,6 +140,46 @@ export const Composer = () => {
       {!settings.merged.ui?.hideFooter && (
         <Footer {...footerProps} vimMode={vimEnabled ? vimMode : undefined} />
       )}
+
+      <Box
+        marginTop={1}
+        justifyContent={
+          settings.merged.ui?.hideContextSummary
+            ? 'flex-start'
+            : 'space-between'
+        }
+        width="100%"
+        flexDirection={isNarrow ? 'column' : 'row'}
+        alignItems={isNarrow ? 'flex-start' : 'center'}
+      >
+        <Box marginRight={1}>
+          {process.env['GEMINI_SYSTEM_MD'] && (
+            <Text color={theme.status.error}>|⌐■_■| </Text>
+          )}
+          {uiState.ctrlCPressedOnce ? (
+            <Text color={theme.status.warning}>
+              Press Ctrl+C again to exit.
+            </Text>
+          ) : uiState.ctrlDPressedOnce ? (
+            <Text color={theme.status.warning}>
+              Press Ctrl+D again to exit.
+            </Text>
+          ) : uiState.showEscapePrompt ? (
+            <Text color={theme.text.secondary}>Press Esc again to clear.</Text>
+          ) : (
+            !settings.merged.ui?.hideContextSummary && (
+              <ContextSummaryDisplay
+                ideContext={uiState.ideContextState}
+                geminiMdFileCount={uiState.geminiMdFileCount}
+                contextFileNames={contextFileNames}
+                mcpServers={config.getMcpServers()}
+                blockedMcpServers={config.getBlockedMcpServers()}
+                showToolDescriptions={uiState.showToolDescriptions}
+              />
+            )
+          )}
+        </Box>
+      </Box>
     </Box>
   );
 };

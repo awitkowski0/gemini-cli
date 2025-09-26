@@ -128,9 +128,7 @@ export const Footer: React.FC<FooterProps> = ({
               </Text>
             </Text>
           ) : (
-            <Text color={theme.status.error}>
-              no sandbox <Text color={theme.text.secondary}>(see /docs)</Text>
-            </Text>
+            <Text color={theme.status.error}>no sandbox</Text>
           )}
         </Box>
       )}
