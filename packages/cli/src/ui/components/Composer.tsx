@@ -25,6 +25,7 @@ import { useConfig } from '../contexts/ConfigContext.js';
 import { useSettings } from '../contexts/SettingsContext.js';
 import { ApprovalMode } from '@google/gemini-cli-core';
 import { StreamingState } from '../types.js';
+import { ModelInfo } from './ModelInfo.js';
 import { ConfigInitDisplay } from '../components/ConfigInitDisplay.js';
 
 export const Composer = () => {
@@ -47,18 +48,10 @@ export const Composer = () => {
 
   // Build footer props from context values
   const footerProps: Omit<FooterProps, 'vimMode'> = {
-    model: config.getModel(),
     targetDir: config.getTargetDir(),
     debugMode: config.getDebugMode(),
     branchName: uiState.branchName,
     debugMessage: uiState.debugMessage,
-    corgiMode: uiState.corgiMode,
-    errorCount: uiState.errorCount,
-    showErrorDetails: uiState.showErrorDetails,
-    showMemoryUsage:
-      config.getDebugMode() || settings.merged.ui?.showMemoryUsage || false,
-    promptTokenCount: uiState.sessionStats.lastPromptTokenCount,
-    nightly: uiState.nightly,
     isTrustedFolder: uiState.isTrustedFolder,
     hideCWD: settings.merged.ui?.footer?.hideCWD || false,
     hideSandboxStatus: settings.merged.ui?.footer?.hideSandboxStatus || false,
@@ -88,12 +81,34 @@ export const Composer = () => {
 
       <QueuedMessageDisplay messageQueue={uiState.messageQueue} />
 
-      <Box paddingTop={isNarrow ? 1 : 0}>
-        {showAutoAcceptIndicator !== ApprovalMode.DEFAULT &&
-          !uiState.shellModeActive && (
-            <AutoAcceptIndicator approvalMode={showAutoAcceptIndicator} />
-          )}
-        {uiState.shellModeActive && <ShellModeIndicator />}
+      <Box
+        marginTop={1}
+        paddingTop={isNarrow ? 1 : 0}
+        flexDirection={isNarrow ? 'column' : 'row'}
+        alignItems={isNarrow ? 'flex-start' : 'center'}
+        justifyContent="space-between"
+      >
+        <Box flexDirection="row">
+          {showAutoAcceptIndicator !== ApprovalMode.DEFAULT &&
+            !uiState.shellModeActive && (
+              <AutoAcceptIndicator approvalMode={showAutoAcceptIndicator} />
+            )}
+          {uiState.shellModeActive && <ShellModeIndicator />}
+        </Box>
+        <ModelInfo
+          model={config.getModel()}
+          corgiMode={uiState.corgiMode}
+          errorCount={uiState.errorCount}
+          showErrorDetails={uiState.showErrorDetails}
+          showMemoryUsage={
+            config.getDebugMode() ||
+            settings.merged.ui?.showMemoryUsage ||
+            false
+          }
+          promptTokenCount={uiState.sessionStats.lastPromptTokenCount}
+          isNarrow={isNarrow}
+          hideModelInfo={settings.merged.ui?.footer?.hideModelInfo || false}
+        />
       </Box>
 
       {uiState.showErrorDetails && (
@@ -142,7 +157,7 @@ export const Composer = () => {
       )}
 
       <Box
-        marginTop={1}
+        paddingTop={1}
         justifyContent={
           settings.merged.ui?.hideContextSummary
             ? 'flex-start'

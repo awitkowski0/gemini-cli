@@ -8,29 +8,17 @@ import type React from 'react';
 import { Box, Text } from 'ink';
 import { theme } from '../semantic-colors.js';
 import { shortenPath, tildeifyPath } from '@google/gemini-cli-core';
-import { ConsoleSummaryDisplay } from './ConsoleSummaryDisplay.js';
-import process from 'node:process';
 import path from 'node:path';
-import Gradient from 'ink-gradient';
-import { MemoryUsageDisplay } from './MemoryUsageDisplay.js';
-import { ContextUsageDisplay } from './ContextUsageDisplay.js';
 import { DebugProfiler } from './DebugProfiler.js';
 
 import { useTerminalSize } from '../hooks/useTerminalSize.js';
 import { isNarrowWidth } from '../utils/isNarrowWidth.js';
 
 export interface FooterProps {
-  model: string;
   targetDir: string;
   branchName?: string;
   debugMode: boolean;
   debugMessage: string;
-  corgiMode: boolean;
-  errorCount: number;
-  showErrorDetails: boolean;
-  showMemoryUsage?: boolean;
-  promptTokenCount: number;
-  nightly: boolean;
   vimMode?: string;
   isTrustedFolder?: boolean;
   hideCWD?: boolean;
@@ -39,22 +27,15 @@ export interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({
-  model,
   targetDir,
   branchName,
   debugMode,
   debugMessage,
-  corgiMode,
-  errorCount,
-  showErrorDetails,
-  showMemoryUsage,
-  promptTokenCount,
-  nightly,
   vimMode,
   isTrustedFolder,
   hideCWD = false,
   hideSandboxStatus = false,
-  hideModelInfo = false,
+  hideModelInfo = true,
 }) => {
   const { columns: terminalWidth } = useTerminalSize();
 
@@ -79,22 +60,14 @@ export const Footer: React.FC<FooterProps> = ({
         <Box>
           {debugMode && <DebugProfiler />}
           {vimMode && <Text color={theme.text.secondary}>[{vimMode}] </Text>}
-          {!hideCWD &&
-            (nightly ? (
-              <Gradient colors={theme.ui.gradient}>
-                <Text>
-                  {displayPath}
-                  {branchName && <Text> ({branchName}*)</Text>}
-                </Text>
-              </Gradient>
-            ) : (
-              <Text color={theme.text.link}>
-                {displayPath}
-                {branchName && (
-                  <Text color={theme.text.secondary}> ({branchName}*)</Text>
-                )}
-              </Text>
-            ))}
+          {!hideCWD && (
+            <Text color={theme.text.primary}>
+              {displayPath}
+              {branchName && (
+                <Text color={theme.text.secondary}> ({branchName}*)</Text>
+              )}
+            </Text>
+          )}
           {debugMode && (
             <Text color={theme.status.error}>
               {' ' + (debugMessage || '--debug')}
@@ -107,8 +80,8 @@ export const Footer: React.FC<FooterProps> = ({
       {!hideSandboxStatus && (
         <Box
           flexGrow={isNarrow || hideCWD || hideModelInfo ? 0 : 1}
-          alignItems="center"
-          justifyContent={isNarrow || hideCWD ? 'flex-start' : 'center'}
+          alignItems="flex-end"
+          justifyContent="flex-end"
           display="flex"
           paddingX={isNarrow ? 0 : 1}
           paddingTop={isNarrow ? 1 : 0}
@@ -130,46 +103,6 @@ export const Footer: React.FC<FooterProps> = ({
           ) : (
             <Text color={theme.status.error}>no sandbox</Text>
           )}
-        </Box>
-      )}
-
-      {/* Right Section: Gemini Label and Console Summary */}
-      {(!hideModelInfo ||
-        showMemoryUsage ||
-        corgiMode ||
-        (!showErrorDetails && errorCount > 0)) && (
-        <Box alignItems="center" paddingTop={isNarrow ? 1 : 0}>
-          {!hideModelInfo && (
-            <Box alignItems="center">
-              <Text color={theme.text.accent}>
-                {isNarrow ? '' : ' '}
-                {model}{' '}
-                <ContextUsageDisplay
-                  promptTokenCount={promptTokenCount}
-                  model={model}
-                />
-              </Text>
-              {showMemoryUsage && <MemoryUsageDisplay />}
-            </Box>
-          )}
-          <Box alignItems="center" paddingLeft={2}>
-            {corgiMode && (
-              <Text>
-                {!hideModelInfo && <Text color={theme.ui.comment}>| </Text>}
-                <Text color={theme.status.error}>▼</Text>
-                <Text color={theme.text.primary}>(´</Text>
-                <Text color={theme.status.error}>ᴥ</Text>
-                <Text color={theme.text.primary}>`)</Text>
-                <Text color={theme.status.error}>▼ </Text>
-              </Text>
-            )}
-            {!showErrorDetails && errorCount > 0 && (
-              <Box>
-                {!hideModelInfo && <Text color={theme.ui.comment}>| </Text>}
-                <ConsoleSummaryDisplay errorCount={errorCount} />
-              </Box>
-            )}
-          </Box>
         </Box>
       )}
     </Box>

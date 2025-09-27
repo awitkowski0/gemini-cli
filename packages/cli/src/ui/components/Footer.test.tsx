@@ -29,18 +29,11 @@ vi.mock('@google/gemini-cli-core', async (importOriginal) => {
 });
 
 const defaultProps = {
-  model: 'gemini-pro',
   targetDir:
     '/Users/test/project/foo/bar/and/some/more/directories/to/make/it/long',
   branchName: 'main',
   debugMode: false,
   debugMessage: '',
-  corgiMode: false,
-  errorCount: 0,
-  showErrorDetails: false,
-  showMemoryUsage: false,
-  promptTokenCount: 100,
-  nightly: false,
 };
 
 const renderWithWidth = (width: number, props = defaultProps) => {
@@ -96,12 +89,6 @@ describe('<Footer />', () => {
       branchName: undefined,
     });
     expect(lastFrame()).not.toContain(`(${defaultProps.branchName}*)`);
-  });
-
-  it('displays the model name and context percentage', () => {
-    const { lastFrame } = renderWithWidth(120);
-    expect(lastFrame()).toContain(defaultProps.model);
-    expect(lastFrame()).toMatch(/\(\d+% context[\s\S]*left\)/);
   });
 
   describe('sandbox and trust info', () => {
