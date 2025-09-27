@@ -6,7 +6,7 @@ exports[`<Footer /> > footer configuration filtering (golden snapshots) > render
 no sandbox"
 `;
 
-exports[`<Footer /> > footer configuration filtering (golden snapshots) > renders complete footer with all sections visible (baseline) > complete-footer-wide 1`] = `"...bar/and/some/more/directories/to/make/it/long (main*)                 no sandbox"`;
+exports[`<Footer /> > footer configuration filtering (golden snapshots) > renders complete footer with all sections visible (baseline) > complete-footer-wide 1`] = `"...bar/and/some/more/directories/to/make/it/long (main*)                                 no sandbox"`;
 
 exports[`<Footer /> > footer configuration filtering (golden snapshots) > renders footer with CWD and model info hidden to test alignment (only sandbox visible) > footer-only-sandbox 1`] = `"                                             no sandbox"`;
 
