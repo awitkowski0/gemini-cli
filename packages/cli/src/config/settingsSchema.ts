@@ -304,13 +304,22 @@ const SETTINGS_SCHEMA = {
             description: 'Hide the sandbox status indicator in the footer.',
             showInDialog: true,
           },
-          hideModelInfo: {
+          hideModelName: {
             type: 'boolean',
-            label: 'Hide Model Info',
+            label: 'Hide Model Name',
             category: 'UI',
             requiresRestart: false,
             default: false,
-            description: 'Hide the model name and context usage in the footer.',
+            description: 'Hide the model name in the footer.',
+            showInDialog: true,
+          },
+          hideModelContextInfo: {
+            type: 'boolean',
+            label: 'Hide Model Context Info',
+            category: 'UI',
+            requiresRestart: false,
+            default: false,
+            description: 'Hide the model context usage in the footer.',
             showInDialog: true,
           },
         },
@@ -1047,5 +1056,6 @@ export type Settings = InferSettings<SettingsSchemaType>;
 export interface FooterSettings {
   hideCWD?: boolean;
   hideSandboxStatus?: boolean;
-  hideModelInfo?: boolean;
+  hideModelName?: boolean;
+  hideModelContextInfo?: boolean;
 }

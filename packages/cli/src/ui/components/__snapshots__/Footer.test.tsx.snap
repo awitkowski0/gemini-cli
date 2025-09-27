@@ -12,4 +12,8 @@ exports[`<Footer /> > footer configuration filtering (golden snapshots) > render
 
 exports[`<Footer /> > footer configuration filtering (golden snapshots) > renders footer with all optional sections hidden (minimal footer) > footer-minimal 1`] = `""`;
 
+exports[`<Footer /> > footer configuration filtering (golden snapshots) > renders footer with only CWD hidden to test alignment (only sandbox visible) > footer-only-sandbox 1`] = `"                                             no sandbox"`;
+
 exports[`<Footer /> > footer configuration filtering (golden snapshots) > renders footer with only model info hidden (partial filtering) > footer-no-model 1`] = `"...bar/and/some/more/directories/to/make/it/long (main*)                                 no sandbox"`;
+
+exports[`<Footer /> > footer configuration filtering (golden snapshots) > renders footer with only sandbox status hidden (partial filtering) > footer-no-sandbox 1`] = `"...bar/and/some/more/directories/to/make/it/long (main*)"`;

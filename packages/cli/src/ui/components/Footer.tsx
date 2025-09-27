@@ -23,7 +23,6 @@ export interface FooterProps {
   isTrustedFolder?: boolean;
   hideCWD?: boolean;
   hideSandboxStatus?: boolean;
-  hideModelInfo?: boolean;
 }
 
 export const Footer: React.FC<FooterProps> = ({
@@ -35,7 +34,6 @@ export const Footer: React.FC<FooterProps> = ({
   isTrustedFolder,
   hideCWD = false,
   hideSandboxStatus = false,
-  hideModelInfo = true,
 }) => {
   const { columns: terminalWidth } = useTerminalSize();
 
@@ -47,7 +45,7 @@ export const Footer: React.FC<FooterProps> = ({
     ? path.basename(tildeifyPath(targetDir))
     : shortenPath(tildeifyPath(targetDir), pathLength);
 
-  const justifyContent = hideCWD && hideModelInfo ? 'center' : 'space-between';
+  const justifyContent = hideCWD ? 'center' : 'space-between';
 
   return (
     <Box
@@ -79,7 +77,7 @@ export const Footer: React.FC<FooterProps> = ({
       {/* Middle Section: Centered Trust/Sandbox Info */}
       {!hideSandboxStatus && (
         <Box
-          flexGrow={isNarrow || hideCWD || hideModelInfo ? 0 : 1}
+          flexGrow={isNarrow || hideCWD ? 0 : 1}
           alignItems="flex-end"
           justifyContent="flex-end"
           display="flex"

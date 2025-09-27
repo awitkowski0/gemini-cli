@@ -150,7 +150,6 @@ describe('<Footer />', () => {
         ...defaultProps,
         hideCWD: false,
         hideSandboxStatus: false,
-        hideModelInfo: false,
       });
       expect(lastFrame()).toMatchSnapshot('complete-footer-wide');
     });
@@ -160,27 +159,24 @@ describe('<Footer />', () => {
         ...defaultProps,
         hideCWD: true,
         hideSandboxStatus: true,
-        hideModelInfo: true,
       });
       expect(lastFrame()).toMatchSnapshot('footer-minimal');
     });
 
-    it('renders footer with only model info hidden (partial filtering)', () => {
+    it('renders footer with only sandbox status hidden (partial filtering)', () => {
       const { lastFrame } = renderWithWidth(120, {
         ...defaultProps,
         hideCWD: false,
-        hideSandboxStatus: false,
-        hideModelInfo: true,
+        hideSandboxStatus: true,
       });
-      expect(lastFrame()).toMatchSnapshot('footer-no-model');
+      expect(lastFrame()).toMatchSnapshot('footer-no-sandbox');
     });
 
-    it('renders footer with CWD and model info hidden to test alignment (only sandbox visible)', () => {
+    it('renders footer with only CWD hidden to test alignment (only sandbox visible)', () => {
       const { lastFrame } = renderWithWidth(120, {
         ...defaultProps,
         hideCWD: true,
         hideSandboxStatus: false,
-        hideModelInfo: true,
       });
       expect(lastFrame()).toMatchSnapshot('footer-only-sandbox');
     });
@@ -190,7 +186,6 @@ describe('<Footer />', () => {
         ...defaultProps,
         hideCWD: false,
         hideSandboxStatus: false,
-        hideModelInfo: false,
       });
       expect(lastFrame()).toMatchSnapshot('complete-footer-narrow');
     });

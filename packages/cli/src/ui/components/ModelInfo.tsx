@@ -19,7 +19,8 @@ export interface ModelInfoProps {
   showMemoryUsage?: boolean;
   promptTokenCount: number;
   isNarrow: boolean;
-  hideModelInfo?: boolean;
+  hideModelName?: boolean;
+  hideModelContextInfo?: boolean;
 }
 
 export const ModelInfo: React.FC<ModelInfoProps> = ({
@@ -30,10 +31,12 @@ export const ModelInfo: React.FC<ModelInfoProps> = ({
   showMemoryUsage,
   promptTokenCount,
   isNarrow,
-  hideModelInfo = false,
+  hideModelName = false,
+  hideModelContextInfo = false,
 }) => {
   if (
-    hideModelInfo &&
+    hideModelName &&
+    hideModelContextInfo &&
     !showMemoryUsage &&
     !corgiMode &&
     (showErrorDetails || errorCount === 0)
@@ -43,23 +46,24 @@ export const ModelInfo: React.FC<ModelInfoProps> = ({
 
   return (
     <Box alignItems="center" paddingTop={isNarrow ? 1 : 0}>
-      {!hideModelInfo && (
-        <Box alignItems="center">
-          <Text color={theme.text.primary}>
-            {isNarrow ? '' : ' '}
-            {model}{' '}
-            <ContextUsageDisplay
-              promptTokenCount={promptTokenCount}
-              model={model}
-            />
-          </Text>
-          {showMemoryUsage && <MemoryUsageDisplay />}
-        </Box>
-      )}
+      <Text color={theme.text.primary}>
+        {isNarrow ? '' : ' '}
+        {!hideModelName && <Text>{model} </Text>}
+        {!hideModelContextInfo && (
+          <ContextUsageDisplay
+            promptTokenCount={promptTokenCount}
+            model={model}
+            hideModelName={hideModelName}
+          />
+        )}
+      </Text>
+      {showMemoryUsage && <MemoryUsageDisplay />}
       <Box alignItems="center" paddingLeft={2}>
         {corgiMode && (
           <Text>
-            {!hideModelInfo && <Text color={theme.ui.comment}>| </Text>}
+            {!hideModelName && !hideModelContextInfo && (
+              <Text color={theme.ui.comment}>| </Text>
+            )}
             <Text color={theme.status.error}>▼</Text>
             <Text color={theme.text.primary}>(´</Text>
             <Text color={theme.status.error}>ᴥ</Text>
@@ -69,7 +73,9 @@ export const ModelInfo: React.FC<ModelInfoProps> = ({
         )}
         {!showErrorDetails && errorCount > 0 && (
           <Box>
-            {!hideModelInfo && <Text color={theme.ui.comment}>| </Text>}
+            {!hideModelName && !hideModelContextInfo && (
+              <Text color={theme.ui.comment}>| </Text>
+            )}
             <ConsoleSummaryDisplay errorCount={errorCount} />
           </Box>
         )}

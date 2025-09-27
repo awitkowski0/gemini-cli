@@ -55,7 +55,6 @@ export const Composer = () => {
     isTrustedFolder: uiState.isTrustedFolder,
     hideCWD: settings.merged.ui?.footer?.hideCWD || false,
     hideSandboxStatus: settings.merged.ui?.footer?.hideSandboxStatus || false,
-    hideModelInfo: settings.merged.ui?.footer?.hideModelInfo || false,
   };
 
   return (
@@ -107,7 +106,10 @@ export const Composer = () => {
           }
           promptTokenCount={uiState.sessionStats.lastPromptTokenCount}
           isNarrow={isNarrow}
-          hideModelInfo={settings.merged.ui?.footer?.hideModelInfo || false}
+          hideModelName={settings.merged.ui?.footer?.hideModelName || false}
+          hideModelContextInfo={
+            settings.merged.ui?.footer?.hideModelContextInfo || false
+          }
         />
       </Box>
 
