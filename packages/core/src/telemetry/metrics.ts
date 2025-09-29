@@ -40,18 +40,6 @@ const REGRESSION_PERCENTAGE_CHANGE =
   'gemini_cli.performance.regression.percentage_change';
 const BASELINE_COMPARISON = 'gemini_cli.performance.baseline.comparison';
 
-type AttributeTypes<T> = {
-  [K in keyof T]: T[K] extends string
-    ? string
-    : T[K] extends number
-      ? number
-      : T[K] extends boolean
-        ? boolean
-        : T[K] extends undefined
-          ? string | undefined
-          : never;
-};
-
 interface MetricDefinition<T> {
   name: string;
   attributes: T;
@@ -155,6 +143,42 @@ interface MetricDefinitions {
     current_value: number;
     baseline_value: number;
   }>;
+}
+
+export enum FileOperation {
+  CREATE = 'create',
+  READ = 'read',
+  UPDATE = 'update',
+}
+
+export enum PerformanceMetricType {
+  STARTUP = 'startup',
+  MEMORY = 'memory',
+  CPU = 'cpu',
+  TOOL_EXECUTION = 'tool_execution',
+  API_REQUEST = 'api_request',
+  TOKEN_EFFICIENCY = 'token_efficiency',
+}
+
+export enum MemoryMetricType {
+  HEAP_USED = 'heap_used',
+  HEAP_TOTAL = 'heap_total',
+  EXTERNAL = 'external',
+  RSS = 'rss',
+}
+
+export enum ToolExecutionPhase {
+  VALIDATION = 'validation',
+  PREPARATION = 'preparation',
+  EXECUTION = 'execution',
+  RESULT_PROCESSING = 'result_processing',
+}
+
+export enum ApiRequestPhase {
+  REQUEST_PREPARATION = 'request_preparation',
+  NETWORK_LATENCY = 'network_latency',
+  RESPONSE_PROCESSING = 'response_processing',
+  TOKEN_PROCESSING = 'token_processing',
 }
 
 export const metricDefinitions: MetricDefinitions = {
@@ -346,42 +370,6 @@ export const metricDefinitions: MetricDefinitions = {
   },
 };
 
-export enum FileOperation {
-  CREATE = 'create',
-  READ = 'read',
-  UPDATE = 'update',
-}
-
-export enum PerformanceMetricType {
-  STARTUP = 'startup',
-  MEMORY = 'memory',
-  CPU = 'cpu',
-  TOOL_EXECUTION = 'tool_execution',
-  API_REQUEST = 'api_request',
-  TOKEN_EFFICIENCY = 'token_efficiency',
-}
-
-export enum MemoryMetricType {
-  HEAP_USED = 'heap_used',
-  HEAP_TOTAL = 'heap_total',
-  EXTERNAL = 'external',
-  RSS = 'rss',
-}
-
-export enum ToolExecutionPhase {
-  VALIDATION = 'validation',
-  PREPARATION = 'preparation',
-  EXECUTION = 'execution',
-  RESULT_PROCESSING = 'result_processing',
-}
-
-export enum ApiRequestPhase {
-  REQUEST_PREPARATION = 'request_preparation',
-  NETWORK_LATENCY = 'network_latency',
-  RESPONSE_PROCESSING = 'response_processing',
-  TOKEN_PROCESSING = 'token_processing',
-}
-
 let cliMeter: Meter | undefined;
 let toolCallCounter: Counter | undefined;
 let toolCallLatencyHistogram: Histogram | undefined;
@@ -549,9 +537,7 @@ export function recordChatCompressionMetrics(
 export function recordToolCallMetrics(
   config: Config,
   durationMs: number,
-  attributes: AttributeTypes<
-    typeof metricDefinitions.TOOL_CALL_COUNT.attributes
-  >,
+  attributes: MetricDefinitions['TOOL_CALL_COUNT']['attributes'],
 ): void {
   if (!toolCallCounter || !toolCallLatencyHistogram || !isMetricsInitialized)
     return;
@@ -570,7 +556,7 @@ export function recordToolCallMetrics(
 export function recordTokenUsageMetrics(
   config: Config,
   tokenCount: number,
-  attributes: AttributeTypes<typeof metricDefinitions.TOKEN_USAGE.attributes>,
+  attributes: MetricDefinitions['TOKEN_USAGE']['attributes'],
 ): void {
   if (!tokenUsageCounter || !isMetricsInitialized) return;
   tokenUsageCounter.add(tokenCount, {
@@ -582,9 +568,7 @@ export function recordTokenUsageMetrics(
 export function recordApiResponseMetrics(
   config: Config,
   durationMs: number,
-  attributes: AttributeTypes<
-    typeof metricDefinitions.API_REQUEST_COUNT.attributes
-  >,
+  attributes: MetricDefinitions['API_REQUEST_COUNT']['attributes'],
 ): void {
   if (
     !apiRequestCounter ||
@@ -607,9 +591,7 @@ export function recordApiResponseMetrics(
 export function recordApiErrorMetrics(
   config: Config,
   durationMs: number,
-  attributes: AttributeTypes<
-    typeof metricDefinitions.API_REQUEST_COUNT.attributes
-  >,
+  attributes: MetricDefinitions['API_REQUEST_COUNT']['attributes'],
 ): void {
   if (
     !apiRequestCounter ||
@@ -632,9 +614,7 @@ export function recordApiErrorMetrics(
 
 export function recordFileOperationMetric(
   config: Config,
-  attributes: AttributeTypes<
-    typeof metricDefinitions.FILE_OPERATION_COUNT.attributes
-  >,
+  attributes: MetricDefinitions['FILE_OPERATION_COUNT']['attributes'],
 ): void {
   if (!fileOperationCounter || !isMetricsInitialized) return;
   fileOperationCounter.add(1, {
@@ -804,14 +784,22 @@ export function initializePerformanceMonitoring(config: Config): void {
 export function recordStartupPerformance(
   config: Config,
   durationMs: number,
-  attributes: AttributeTypes<typeof metricDefinitions.STARTUP_TIME.attributes>,
+  attributes: MetricDefinitions['STARTUP_TIME']['attributes'],
 ): void {
   if (!startupTimeHistogram || !isPerformanceMonitoringEnabled) return;
 
+  const { details, ...rest } = attributes;
+
   const metricAttributes: Attributes = {
     ...baseMetricDefinition.getCommonAttributes(config),
-    ...attributes,
+    ...rest,
   };
+
+  if (details) {
+    for (const key in details) {
+      metricAttributes[`details.${key}`] = details[key];
+    }
+  }
 
   startupTimeHistogram.record(durationMs, metricAttributes);
 }
@@ -819,7 +807,7 @@ export function recordStartupPerformance(
 export function recordMemoryUsage(
   config: Config,
   bytes: number,
-  attributes: AttributeTypes<typeof metricDefinitions.MEMORY_USAGE.attributes>,
+  attributes: MetricDefinitions['MEMORY_USAGE']['attributes'],
 ): void {
   if (!memoryUsageGauge || !isPerformanceMonitoringEnabled) return;
 
@@ -834,7 +822,7 @@ export function recordMemoryUsage(
 export function recordCpuUsage(
   config: Config,
   percentage: number,
-  attributes: AttributeTypes<typeof metricDefinitions.CPU_USAGE.attributes>,
+  attributes: MetricDefinitions['CPU_USAGE']['attributes'],
 ): void {
   if (!cpuUsageGauge || !isPerformanceMonitoringEnabled) return;
 
@@ -859,9 +847,7 @@ export function recordToolQueueDepth(config: Config, queueDepth: number): void {
 export function recordToolExecutionBreakdown(
   config: Config,
   durationMs: number,
-  attributes: AttributeTypes<
-    typeof metricDefinitions.TOOL_EXECUTION_BREAKDOWN.attributes
-  >,
+  attributes: MetricDefinitions['TOOL_EXECUTION_BREAKDOWN']['attributes'],
 ): void {
   if (!toolExecutionBreakdownHistogram || !isPerformanceMonitoringEnabled)
     return;
@@ -877,9 +863,7 @@ export function recordToolExecutionBreakdown(
 export function recordTokenEfficiency(
   config: Config,
   value: number,
-  attributes: AttributeTypes<
-    typeof metricDefinitions.TOKEN_EFFICIENCY.attributes
-  >,
+  attributes: MetricDefinitions['TOKEN_EFFICIENCY']['attributes'],
 ): void {
   if (!tokenEfficiencyHistogram || !isPerformanceMonitoringEnabled) return;
 
@@ -894,9 +878,7 @@ export function recordTokenEfficiency(
 export function recordApiRequestBreakdown(
   config: Config,
   durationMs: number,
-  attributes: AttributeTypes<
-    typeof metricDefinitions.API_REQUEST_BREAKDOWN.attributes
-  >,
+  attributes: MetricDefinitions['API_REQUEST_BREAKDOWN']['attributes'],
 ): void {
   if (!apiRequestBreakdownHistogram || !isPerformanceMonitoringEnabled) return;
 
@@ -911,9 +893,7 @@ export function recordApiRequestBreakdown(
 export function recordPerformanceScore(
   config: Config,
   score: number,
-  attributes: AttributeTypes<
-    typeof metricDefinitions.PERFORMANCE_SCORE.attributes
-  >,
+  attributes: MetricDefinitions['PERFORMANCE_SCORE']['attributes'],
 ): void {
   if (!performanceScoreGauge || !isPerformanceMonitoringEnabled) return;
 
@@ -927,9 +907,7 @@ export function recordPerformanceScore(
 
 export function recordPerformanceRegression(
   config: Config,
-  attributes: AttributeTypes<
-    typeof metricDefinitions.REGRESSION_DETECTION.attributes
-  >,
+  attributes: MetricDefinitions['REGRESSION_DETECTION']['attributes'],
 ): void {
   if (!regressionDetectionCounter || !isPerformanceMonitoringEnabled) return;
 
@@ -954,9 +932,7 @@ export function recordPerformanceRegression(
 
 export function recordBaselineComparison(
   config: Config,
-  attributes: AttributeTypes<
-    typeof metricDefinitions.BASELINE_COMPARISON.attributes
-  >,
+  attributes: MetricDefinitions['BASELINE_COMPARISON']['attributes'],
 ): void {
   if (!baselineComparisonHistogram || !isPerformanceMonitoringEnabled) return;
 
