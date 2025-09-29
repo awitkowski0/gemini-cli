@@ -75,6 +75,7 @@ For detailed information about all configuration options, see the
 Before using either method below, complete these steps:
 
 1. Set your Google Cloud project ID:
+
    - For telemetry in a separate project from inference:
      ```bash
      export OTLP_GOOGLE_CLOUD_PROJECT="your-telemetry-project-id"
@@ -94,6 +95,7 @@ Before using either method below, complete these steps:
      export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your/service-account.json"
      ```
 3. Make sure your account or service account has these IAM roles:
+
    - Cloud Trace Agent
    - Monitoring Metric Writer
    - Logs Writer
@@ -211,6 +213,7 @@ for Gemini CLI:
 
 - `gemini_cli.config`: This event occurs once at startup with the CLI's
   configuration.
+
   - **Attributes**:
     - `model` (string)
     - `embedding_model` (string)
@@ -227,6 +230,7 @@ for Gemini CLI:
     - `output_format` (string: "text" or "json")
 
 - `gemini_cli.user_prompt`: This event occurs when a user submits a prompt.
+
   - **Attributes**:
     - `prompt_length` (int)
     - `prompt_id` (string)
@@ -235,6 +239,7 @@ for Gemini CLI:
     - `auth_type` (string)
 
 - `gemini_cli.tool_call`: This event occurs for each function call.
+
   - **Attributes**:
     - `function_name`
     - `function_args`
@@ -248,6 +253,7 @@ for Gemini CLI:
     - `metadata` (if applicable, dictionary of string -> any)
 
 - `gemini_cli.file_operation`: This event occurs for each file operation.
+
   - **Attributes**:
     - `tool_name` (string)
     - `operation` (string: "create", "read", "update")
@@ -262,11 +268,13 @@ for Gemini CLI:
       - `user_removed_lines` (int)
 
 - `gemini_cli.api_request`: This event occurs when making a request to Gemini API.
+
   - **Attributes**:
     - `model`
     - `request_text` (if applicable)
 
 - `gemini_cli.api_error`: This event occurs if the API request fails.
+
   - **Attributes**:
     - `model`
     - `error`
@@ -276,6 +284,7 @@ for Gemini CLI:
     - `auth_type`
 
 - `gemini_cli.api_response`: This event occurs upon receiving a response from Gemini API.
+
   - **Attributes**:
     - `model`
     - `status_code`
@@ -290,6 +299,7 @@ for Gemini CLI:
     - `auth_type`
 
 - `gemini_cli.tool_output_truncated`: This event occurs when the output of a tool call is too large and gets truncated.
+
   - **Attributes**:
     - `tool_name` (string)
     - `original_content_length` (int)
@@ -299,14 +309,17 @@ for Gemini CLI:
     - `prompt_id` (string)
 
 - `gemini_cli.malformed_json_response`: This event occurs when a `generateJson` response from Gemini API cannot be parsed as a json.
+
   - **Attributes**:
     - `model`
 
 - `gemini_cli.flash_fallback`: This event occurs when Gemini CLI switches to flash as fallback.
+
   - **Attributes**:
     - `auth_type`
 
 - `gemini_cli.slash_command`: This event occurs when a user executes a slash command.
+
   - **Attributes**:
     - `command` (string)
     - `subcommand` (string, if applicable)
@@ -327,6 +340,7 @@ Metrics are numerical measurements of behavior over time. The following metrics 
 - `gemini_cli.session.count` (Counter, Int): Incremented once per CLI startup.
 
 - `gemini_cli.tool.call.count` (Counter, Int): Counts tool calls.
+
   - **Attributes**:
     - `function_name`
     - `success` (boolean)
@@ -334,26 +348,31 @@ Metrics are numerical measurements of behavior over time. The following metrics 
     - `tool_type` (string: "mcp", or "native", if applicable)
 
 - `gemini_cli.tool.call.latency` (Histogram, ms): Measures tool call latency.
+
   - **Attributes**:
     - `function_name`
     - `decision` (string: "accept", "reject", or "modify", if applicable)
 
 - `gemini_cli.api.request.count` (Counter, Int): Counts all API requests.
+
   - **Attributes**:
     - `model`
     - `status_code`
     - `error_type` (if applicable)
 
 - `gemini_cli.api.request.latency` (Histogram, ms): Measures API request latency.
+
   - **Attributes**:
     - `model`
 
 - `gemini_cli.token.usage` (Counter, Int): Counts the number of tokens used.
+
   - **Attributes**:
     - `model`
     - `type` (string: "input", "output", "thought", "cache", or "tool")
 
 - `gemini_cli.file.operation.count` (Counter, Int): Counts file operations.
+
   - **Attributes**:
     - `operation` (string: "create", "read", "update"): The type of file operation.
     - `lines` (Int, if applicable): Number of lines in the file.
