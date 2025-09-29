@@ -275,6 +275,7 @@ describe('AppContainer State Management', () => {
             settings={mockSettings}
             version="1.0.0"
             initializationResult={mockInitResult}
+            isInitialOnboarding={false}
           />,
         );
       }).not.toThrow();
@@ -291,6 +292,7 @@ describe('AppContainer State Management', () => {
             startupWarnings={startupWarnings}
             version="1.0.0"
             initializationResult={mockInitResult}
+            isInitialOnboarding={false}
           />,
         );
       }).not.toThrow();
@@ -311,6 +313,7 @@ describe('AppContainer State Management', () => {
             settings={mockSettings}
             version="1.0.0"
             initializationResult={initResultWithError}
+            isInitialOnboarding={false}
           />,
         );
       }).not.toThrow();
@@ -327,6 +330,7 @@ describe('AppContainer State Management', () => {
             settings={mockSettings}
             version="1.0.0"
             initializationResult={mockInitResult}
+            isInitialOnboarding={false}
           />,
         );
       }).not.toThrow();
@@ -341,6 +345,7 @@ describe('AppContainer State Management', () => {
           settings={mockSettings}
           version="2.0.0"
           initializationResult={mockInitResult}
+          isInitialOnboarding={false}
         />,
       );
 
@@ -356,6 +361,7 @@ describe('AppContainer State Management', () => {
             settings={mockSettings}
             version="1.0.0"
             initializationResult={mockInitResult}
+            isInitialOnboarding={false}
           />,
         );
       }).not.toThrow();
@@ -369,6 +375,7 @@ describe('AppContainer State Management', () => {
             settings={mockSettings}
             version="1.0.0"
             initializationResult={mockInitResult}
+            isInitialOnboarding={false}
           />,
         );
       }).not.toThrow();
@@ -382,6 +389,7 @@ describe('AppContainer State Management', () => {
             settings={mockSettings}
             version="1.0.0"
             initializationResult={mockInitResult}
+            isInitialOnboarding={false}
           />,
         );
       }).not.toThrow();
@@ -406,6 +414,7 @@ describe('AppContainer State Management', () => {
             settings={settingsAllHidden}
             version="1.0.0"
             initializationResult={mockInitResult}
+            isInitialOnboarding={false}
           />,
         );
       }).not.toThrow();
@@ -428,6 +437,7 @@ describe('AppContainer State Management', () => {
             settings={settingsWithMemory}
             version="1.0.0"
             initializationResult={mockInitResult}
+            isInitialOnboarding={false}
           />,
         );
       }).not.toThrow();
@@ -445,6 +455,7 @@ describe('AppContainer State Management', () => {
               settings={mockSettings}
               version={version}
               initializationResult={mockInitResult}
+              isInitialOnboarding={false}
             />,
           );
         }).not.toThrow();
@@ -467,6 +478,7 @@ describe('AppContainer State Management', () => {
             settings={mockSettings}
             version="1.0.0"
             initializationResult={mockInitResult}
+            isInitialOnboarding={false}
           />,
         );
       }).not.toThrow();
@@ -484,6 +496,7 @@ describe('AppContainer State Management', () => {
             settings={undefinedSettings}
             version="1.0.0"
             initializationResult={mockInitResult}
+            isInitialOnboarding={false}
           />,
         );
       }).not.toThrow();
@@ -500,6 +513,7 @@ describe('AppContainer State Management', () => {
           settings={mockSettings}
           version="1.0.0"
           initializationResult={mockInitResult}
+          isInitialOnboarding={false}
         />,
       );
 
@@ -516,6 +530,7 @@ describe('AppContainer State Management', () => {
           settings={mockSettings}
           version="1.0.0"
           initializationResult={mockInitResult}
+          isInitialOnboarding={false}
         />,
       );
 
@@ -542,6 +557,7 @@ describe('AppContainer State Management', () => {
           settings={mockSettings}
           version="1.0.0"
           initializationResult={mockInitResult}
+          isInitialOnboarding={false}
         />,
       );
 
@@ -564,6 +580,7 @@ describe('AppContainer State Management', () => {
           settings={mockSettings}
           version="1.0.0"
           initializationResult={mockInitResult}
+          isInitialOnboarding={false}
         />,
       );
 
@@ -601,6 +618,7 @@ describe('AppContainer State Management', () => {
           settings={mockSettings}
           version="1.0.0"
           initializationResult={mockInitResult}
+          isInitialOnboarding={false}
         />,
       );
 
@@ -639,6 +657,7 @@ describe('AppContainer State Management', () => {
           settings={mockSettings}
           version="1.0.0"
           initializationResult={mockInitResult}
+          isInitialOnboarding={false}
         />,
       );
 
@@ -667,6 +686,7 @@ describe('AppContainer State Management', () => {
           settings={mockSettings}
           version="1.0.0"
           initializationResult={mockInitResult}
+          isInitialOnboarding={false}
         />,
       );
 
@@ -699,6 +719,7 @@ describe('AppContainer State Management', () => {
           settings={mockSettings}
           version="1.0.0"
           initializationResult={mockInitResult}
+          isInitialOnboarding={false}
         />,
       );
 
@@ -736,6 +757,7 @@ describe('AppContainer State Management', () => {
           settings={mockSettings}
           version="1.0.0"
           initializationResult={mockInitResult}
+          isInitialOnboarding={false}
         />,
       );
 
@@ -761,6 +783,7 @@ describe('AppContainer State Management', () => {
           settings={mockSettings}
           version="1.0.0"
           initializationResult={mockInitResult}
+          isInitialOnboarding={false}
         />,
       );
 
@@ -788,6 +811,7 @@ describe('AppContainer State Management', () => {
           settings={mockSettings}
           version="1.0.0"
           initializationResult={mockInitResult}
+          isInitialOnboarding={false}
         />,
       );
 
@@ -809,6 +833,7 @@ describe('AppContainer State Management', () => {
           settings={mockSettings}
           version="1.0.0"
           initializationResult={mockInitResult}
+          isInitialOnboarding={false}
         />,
       );
 

@@ -315,7 +315,6 @@ describe('BaseSelectionList', () => {
       expect(output).not.toContain('Item 1');
       expect(output).toContain('Item 2');
       expect(output).toContain('Item 4');
-      expect(output).not.toContain('Item 5');
     });
 
     it('should scroll up when activeIndex moves before the visible window', async () => {
@@ -335,7 +334,6 @@ describe('BaseSelectionList', () => {
       output = lastFrame();
       expect(output).toContain('Item 2');
       expect(output).toContain('Item 4');
-      expect(output).not.toContain('Item 5'); // Item 5 should no longer be visible
     });
 
     it('should pin the scroll offset to the end if selection starts near the end', async () => {

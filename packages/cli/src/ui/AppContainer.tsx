@@ -108,6 +108,7 @@ interface AppContainerProps {
   startupWarnings?: string[];
   version: string;
   initializationResult: InitializationResult;
+  isInitialOnboarding: boolean;
 }
 
 /**
@@ -1024,6 +1025,7 @@ Logging in with Google... Please restart Gemini CLI to continue.
       themeError,
       isAuthenticating,
       isConfigInitialized,
+      isInitialOnboarding: props.isInitialOnboarding,
       authError,
       isAuthDialogOpen,
       editorError,
@@ -1101,6 +1103,7 @@ Logging in with Google... Please restart Gemini CLI to continue.
       themeError,
       isAuthenticating,
       isConfigInitialized,
+      props.isInitialOnboarding,
       authError,
       isAuthDialogOpen,
       editorError,

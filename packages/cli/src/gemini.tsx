@@ -163,6 +163,7 @@ export async function startInteractiveUI(
                 startupWarnings={startupWarnings}
                 version={version}
                 initializationResult={initializationResult}
+                isInitialOnboarding={initializationResult.shouldOpenAuthDialog}
               />
             </VimModeProvider>
           </SessionStatsProvider>

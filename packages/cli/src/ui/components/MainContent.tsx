@@ -12,7 +12,11 @@ import { useUIState } from '../contexts/UIStateContext.js';
 import { useAppContext } from '../contexts/AppContext.js';
 import { AppHeader } from './AppHeader.js';
 
-export const MainContent = () => {
+export const MainContent = ({
+  isInitialOnboarding,
+}: {
+  isInitialOnboarding: boolean;
+}) => {
   const { version } = useAppContext();
   const uiState = useUIState();
   const {
@@ -27,7 +31,11 @@ export const MainContent = () => {
       <Static
         key={uiState.historyRemountKey}
         items={[
-          <AppHeader key="app-header" version={version} />,
+          <AppHeader
+            key="app-header"
+            version={version}
+            isInitialOnboarding={isInitialOnboarding}
+          />,
           ...uiState.history.map((h) => (
             <HistoryItemDisplay
               terminalWidth={mainAreaWidth}

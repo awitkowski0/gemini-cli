@@ -24,7 +24,7 @@ export const App = () => {
   return (
     <StreamingContext.Provider value={uiState.streamingState}>
       <Box flexDirection="column" width="90%">
-        <MainContent />
+        <MainContent isInitialOnboarding={uiState.isInitialOnboarding} />
 
         <Box flexDirection="column" ref={uiState.mainControlsRef}>
           <Notifications />

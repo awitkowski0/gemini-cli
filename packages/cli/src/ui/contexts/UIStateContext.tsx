@@ -44,6 +44,7 @@ export interface UIState {
   themeError: string | null;
   isAuthenticating: boolean;
   isConfigInitialized: boolean;
+  isInitialOnboarding: boolean;
   authError: string | null;
   isAuthDialogOpen: boolean;
   editorError: string | null;
