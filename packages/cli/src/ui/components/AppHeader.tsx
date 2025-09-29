@@ -47,13 +47,6 @@ export const AppHeader = ({ version, isInitialOnboarding }: AppHeaderProps) => {
         <Text color={theme.text.secondary}>v{version}</Text>
       </Text>
       <Text color={theme.text.secondary}>/help for more information</Text>
-      <Text color={theme.text.secondary}>
-        /init for initializing instructions
-      </Text>
-      <Text color={theme.text.secondary}>
-        /theme for changing your UI theme
-      </Text>
-      <Text color={theme.text.secondary}>? for shortcuts</Text>
     </Box>
   );
 };
